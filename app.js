@@ -1,4 +1,3 @@
-require("dotenv-safe").config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -8,6 +7,7 @@ const auth = require("./auth");
 
 //Bring in Mongoose so we can communicate with MongoDB
 const mongoose = require('mongoose')
+mongoose.set('strictQuery', true)
 
 //Use mongoose to connect to MongoDB. Display success or failure message depending on connection status
 mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/myApplication", { useNewUrlParser: true })
