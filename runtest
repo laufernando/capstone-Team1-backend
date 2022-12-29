@@ -1,3 +1,0 @@
-#!/bin/bash 
-echo 'Starting test server'
-node -r dotenv-expand/config ./bin/WWW dotenv_config_path=envtest/.env
