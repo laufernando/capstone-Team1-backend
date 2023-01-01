@@ -1,6 +1,6 @@
 const passport = require("passport");
 const { Strategy, ExtractJwt } = require("passport-jwt");
-const User = require("../models/user.model");
+const User = require("../persistence/mongodb/models/user.model");
 
 passport.use(
   "jwt",

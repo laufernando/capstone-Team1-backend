@@ -5,7 +5,9 @@ const router = express.Router();
 const { validateJwtMiddleware } = require("../auth");
 
 //import the user controller to handle our user routes
-const userController = require("../controllers/user.controller")
+const userController = require(
+    `../persistence/${process.env.DB_PROTOCOL}/controllers/user.controller`
+)
 
 //post route to create a user (user registration)
 router.post("/", userController.createUser)

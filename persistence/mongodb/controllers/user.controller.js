@@ -1,7 +1,6 @@
 //Import our model so we can us it to interact with the realated data in MongoDB
 const User = require("../models/user.model")
 
-
 //build our controller that will have our CRUD and other methods for our users
 const userController = {
 
@@ -22,7 +21,6 @@ const userController = {
             const regex = new RegExp(`.*${req.query.lastName}.*$`, "i")
             query.lastName = {'$regex':regex}
         }
-
 
         //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
         try {

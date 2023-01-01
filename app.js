@@ -5,26 +5,17 @@ const logger = require('morgan');
 
 const auth = require("./auth");
 
-//Bring in Mongoose so we can communicate with MongoDB
-const mongoose = require('mongoose')
-mongoose.set('strictQuery', true)
-
-//Use mongoose to connect to MongoDB. Display success or failure message depending on connection status
-mongoose.connect(process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/myApplication", { useNewUrlParser: true })
-    .then(() => {
-        console.log("we have connected to mongo")
-    }).catch(() => {
-        console.log("could not connect to mongo")
-    })
+const db = require('./persistence/data')
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 
-const app = express();
+db.connect()
 
-app.use(logger('dev'));
+const app = express();
+app.use(logger(process.env.LOG_FORMAT))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -37,7 +28,7 @@ app.use('/auth', authRouter);
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
 
-//custom error hadndling
+//custom error handling
 app.use((err, req, res, next) => {
     // some packages pass an error with a status property instead of statusCode
     // reconcile that difference here by copying err.status to err.statusCode
