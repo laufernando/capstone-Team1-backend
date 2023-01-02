@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node -r dotenv-expand/config ./bin/www",
     "unittest": "mocha -r dotenv-expand/config ./unittests/**/*.js",
+    "integtest": "mocha -r dotenv-expand/config ./integtests/**/*.js --file ./integtests/global.setup.js --file ./integtests/global.teardown.js",
+    "test": "npm run unittest && npm run integtest",
     "watch": "nodemon"
   },
   "dependencies": {
@@ -28,6 +30,7 @@
     "debug": "~2.6.9",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.14",
-    "sinon": "^15.0.1"
+    "sinon": "^15.0.1",
+    "supertest": "^6.3.3"
   }
 }
