@@ -9,6 +9,9 @@ var debug = require('debug')('mycapstoneapp:server');
 var http = require('http');
 var db = require('../persistence/data')
 
+db.connect()
+
+
 /**
  * Get port from environment and store in Express.
  */

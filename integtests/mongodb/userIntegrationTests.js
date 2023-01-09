@@ -12,6 +12,12 @@ const auth = require('../../controllers/auth.controller')
 const { die } = require('../../utilities')
 
 describe('User CRUD operations', () => {
+    before(() => {
+        db.connect()
+    })
+    after(() => {
+        db.disconnect()
+    })
 
     describe('Create new user', () => {
 
