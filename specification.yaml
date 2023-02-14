@@ -327,7 +327,40 @@ paths:
                         items:
                           $ref: '#/components/schemas/SneakerResponse'
         '400':
-          $ref: '#/components/responses/400'                 
+          $ref: '#/components/responses/400'
+    put:
+      summary: Update sneaker
+      tags:
+        - Sneaker
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The Sneaker data update
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: The sneaker updates
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sneaker'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'                 
   /api/sneaker:
     get:
       summary: Get a list of sneakers
@@ -382,3 +415,4 @@ paths:
                         $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'                  
+  
