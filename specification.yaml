@@ -105,6 +105,36 @@ components:
           type: string
         statusCode:
           type: string
+    ShopingCart:
+      additionalProperties: false
+      type: object
+      properties:
+        sneakerid:
+          type: string
+        userid:
+          type: string
+        datebuy:
+          type: string  
+        unit:
+          type: string  
+      required:
+        - sneakerid
+        - userid
+        - unit
+    ShopingCartResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        shopingcartid:
+          type: string        
+        sneakerid:
+          type: string
+        userid:
+          type: string
+        datebuy:
+          type: string  
+        unit:
+          type: string  
     OperationalError:
       allOf:
         - type: object
@@ -440,5 +470,32 @@ paths:
                       user:
                         $ref: '#/components/schemas/SneakerResponse'
         '400':
-          $ref: '#/components/responses/400'                  
-  
+          $ref: '#/components/responses/400'
+  /api/buy:
+    post:
+      summary: Add buy to shopingcart
+      tags:
+        - Buy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShopingCart'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ShopingCartResponse'
+        '400':
+          $ref: '#/components/responses/400'
