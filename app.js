@@ -8,6 +8,7 @@ const auth = require("./auth");
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
+const sneakerRouter = require('./routes/sneaker.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 
 const app = express();
@@ -26,6 +27,7 @@ app.use('/auth', authRouter);
 
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
+app.use('/api/sneaker', sneakerRouter);
 
 //custom error handling
 app.use((err, req, res, next) => {

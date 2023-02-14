@@ -38,6 +38,52 @@ components:
           type: string
         email:
           type: string
+    Sneaker:
+      additionalProperties: false
+      type: object
+      properties:
+        marca:
+          type: string
+        genero:
+          type: string
+        talla:
+          type: string  
+        img:
+          type: string  
+        descripcion:
+          type: string     
+        cantidad:
+          type: number 
+        precio:
+          type: number  
+      required:
+        - marca
+        - genero
+        - talla
+        - img
+        - descripcion
+        - cantidad
+        - precio               
+    SneakerResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        _id:
+          type: string
+        marca:
+          type: string
+        genero:
+          type: string
+        talla:
+          type: string  
+        img:
+          type: string  
+        descripcion:
+          type: string     
+        cantidad:
+          type: number 
+        precio:
+          type: number                                            
     Login:
       additionalProperties: false
       type: object
@@ -251,3 +297,50 @@ paths:
           $ref: '#/components/responses/401'
         '404':
           $ref: '#/components/responses/404'
+  /api/sneaker:
+    get:
+      summary: Get a list of sneakers
+      tags:
+        - Sneaker
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'
+    post:
+      summary: Create a new sneaker
+      operationId: createSneaker
+      x-controller: sneaker
+      tags:
+        - Sneaker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sneaker'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'                  

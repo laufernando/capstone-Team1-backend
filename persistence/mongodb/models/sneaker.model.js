@@ -1,36 +1,47 @@
 //bring in mongoose so we can create a schema that represents the data for a User
 const mongoose = require("mongoose");
-//require bcrytp to help with password encryption
-const bcrypt = require("bcryptjs");
+
 
 //Create our schema using mongoose that contains the fields and their data types for our Users
 //More info: https://mongoosejs.com/docs/schematypes.html
-const userSchema = new mongoose.Schema({
-  firstName: {
+const sneakerSchema = new mongoose.Schema({
+  marca: {
     type: String,
     required: true,
     minlength: 2,
   },
-  lastName: {
+  genero: {
     type: String,
     required: true,
     minlength: 2,
   },
-  email: {
+  talla: {
     type: String,
     required: true,
-    index: {
-      unique: true,
-    },
-    match: [/.+\@.+\..+/, "Invalid E-mail Address"],
+    minlength: 2,
   },
-  password: {
+  img: {
     type: String,
     required: true,
-    select: false,
+    minlength: 2,
   },
+  descripcion: {
+    type: String,
+    required: true,
+    minlength: 2,
+  }, 
+  cantidad: {
+    type: Number,
+    required: true,
+    minlength: 0,
+  }, 
+  precio: {
+    type: Number,
+    required: true,
+    minlength: 0,
+  },      
 });
-
+/*
 userSchema.pre("save", function (next) {
   let user = this;
 
@@ -49,12 +60,12 @@ userSchema.pre("save", function (next) {
       next();
     });
   });
-});
+});*/
 
 //Generate the model our code will interact with from the above schema
 //Models allow us to interact with the data inside our MongoDB collections
 //More info: https://mongoosejs.com/docs/models.html
-const User = mongoose.model("User", userSchema);
+const Sneaker = mongoose.model("Sneaker", sneakerSchema);
 
 //export our model
-module.exports = User;
+module.exports = Sneaker;
