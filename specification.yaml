@@ -297,9 +297,47 @@ paths:
           $ref: '#/components/responses/401'
         '404':
           $ref: '#/components/responses/404'
+  /api/sneaker/{id}:
+    get:
+      summary: Get a list of sneakers
+      parameters:      
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string        
+      tags:
+        - Sneaker
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'                 
   /api/sneaker:
     get:
       summary: Get a list of sneakers
+      parameters:
+        - in: query
+          name: busqueda
+          required: false
+          schema:
+            type: string
+            description: The criteria of search       
       tags:
         - Sneaker
       security:
