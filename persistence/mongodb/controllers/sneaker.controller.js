@@ -130,6 +130,37 @@ const sneakerController = {
         statusCode: res.statusCode,
       });
     }
+  },
+  //method to update a user
+  deleteSneaker: async function (req, res, next) {
+    try {
+      //get the user email from the request params
+      const id = req.params.id;
+
+      //store user data sent through the request
+      const delSneakerData = req.body;
+
+      //try to find our user by the email provided in the request params
+      const sneaker = await Sneaker.findById(id);
+
+      //update the user if we found a match and save or return a 404
+      if (sneaker) {
+        await sneaker.deleteOne(sneaker, function(err, obj) {
+          if (err) throw err
+        })
+      } else {
+        res
+          .status(404)
+          .send({ message: "sneaker not found", statusCode: res.statusCode });
+      }
+      res.status(200).send({ message: "sneaker delete", statusCode: res.statusCode });
+    } catch (error) {
+      console.log("failed to update sneaker: " + error);
+      res.status(400).json({
+        message: error.message,
+        statusCode: res.statusCode,
+      });
+    }
   }
 };
 

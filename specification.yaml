@@ -360,7 +360,33 @@ paths:
         '401':
           $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404'                 
+          $ref: '#/components/responses/404'     
+    delete:
+      summary: Delete sneaker
+      tags:
+        - Sneaker
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The Sneaker data delete
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'              
   /api/sneaker:
     get:
       summary: Get a list of sneakers

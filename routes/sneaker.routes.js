@@ -20,4 +20,6 @@ router.post("/", sneakerController.createSneaker);
 
 router.put("/:id", sneakerController.updateSneaker);
 
+router.delete("/:id", sneakerController.deleteSneaker);
+
 module.exports = router;
