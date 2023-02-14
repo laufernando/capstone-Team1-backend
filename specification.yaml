@@ -109,9 +109,9 @@ components:
       additionalProperties: false
       type: object
       properties:
-        sneakerid:
+        sneaker_id:
           type: string
-        userid:
+        user_id:
           type: string
         datebuy:
           type: string  
@@ -125,9 +125,9 @@ components:
       additionalProperties: false
       type: object
       properties:
-        shopingcartid:
+        shopingcart_id:
           type: string        
-        sneakerid:
+        sneaker_id:
           type: string
         userid:
           type: string
