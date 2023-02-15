@@ -452,7 +452,7 @@ paths:
       tags:
         - Sneaker
       requestBody:
-        description: Solicitud para subir un archivo
+        description: Actualiza la imagen
         content:
           multipart/form-data:
             schema:
@@ -494,19 +494,21 @@ paths:
                         $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'  
-    post:
-      summary: Upload a file
+    put:
+      summary: Update a file
       operationId: updateUploadFile
       x-controller: sneaker
       tags:
         - Sneaker
       requestBody:
         description: Solicitud para subir un archivo
-        content:
+        content:      
           multipart/form-data:
             schema:
               type: object
-              properties:                            
+              properties:  
+                id:
+                  type: string                                          
                 file:
                   type: string
                   format: binary

@@ -228,6 +228,59 @@ const sneakerController = {
         });
       }
     },
+    //method to create a new sneaker
+    updateUploadFile: async function (req, res) {
+      try {
+        upload(req, res, async function (err) {
+          if (err instanceof multer.MulterError) {
+            // Si se produce un error al cargar el archivo
+            console.log(err);
+            res.status(500).send('Error al cargar el archivo');
+          } else if (err) {
+            // Si se produce un error inesperado
+            console.log(err);
+            res.status(500).send('Error inesperado');
+          } else {
+            // Si la carga del archivo fue exitosa
+
+            const id = req.body.id;
+            let sneakerData = await Sneaker.findById(id);
+            let sneaker = await Sneaker.findById(id);
+
+            sneakerData.img=req.file.filename;
+
+                  //update the user if we found a match and save or return a 404
+            if (sneakerData) {
+              Object.assign(sneaker, sneakerData);
+              await sneaker.save();
+            } else {
+              res
+                .status(404)
+                .send({ message: "sneaker not found", statusCode: res.statusCode });
+            }
+
+
+            const serverName = req.hostname;
+            const serverPort = req.app.get('port');
+
+            sneakerData.img=`${serverName}:${serverPort}/public/uploads/${sneakerData.img}`;
+
+            //return the newly created user
+            res.status(201).json(sneakerData);
+
+            console.log('Archivo cargado', req.file.filename);
+      
+          }
+        });
+      } catch (error) {
+        //handle errors creating user
+        console.log("failed to create user: " + error);
+        res.status(400).json({
+          message: error.message,
+          statusCode: res.statusCode,
+        });
+      }
+    },    
 };
 
 module.exports = sneakerController;
