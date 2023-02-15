@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 //Create our schema using mongoose that contains the fields and their data types for our Users
 //More info: https://mongoosejs.com/docs/schematypes.html
-const shopingcartSchema = new mongoose.Schema({
+const shoppingcartSchema = new mongoose.Schema({
   sneaker_id: {
     type: String,
     required: true,
@@ -15,15 +15,14 @@ const shopingcartSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
   },
-  date_buy:{
+  date_buy: {
     type: String,
-    required: false,
-    minlength: 2,
+    required: false
   },
   unit:{
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 1,
   }
 });
 /*
@@ -50,7 +49,7 @@ userSchema.pre("save", function (next) {
 //Generate the model our code will interact with from the above schema
 //Models allow us to interact with the data inside our MongoDB collections
 //More info: https://mongoosejs.com/docs/models.html
-const shopingcart = mongoose.model("ShopingCart", shopingcartSchema);
+const shoppingcart = mongoose.model("ShoppingCart", shoppingcartSchema);
 
 //export our model
-module.exports = shopingcart;
+module.exports = shoppingcart;
