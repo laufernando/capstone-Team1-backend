@@ -49,9 +49,7 @@ components:
         genero:
           type: string
         talla:
-          type: string  
-        img:
-          type: string  
+          type: string   
         descripcion:
           type: string     
         cantidad:
@@ -62,7 +60,6 @@ components:
         - marca
         - genero
         - talla
-        - img
         - descripcion
         - cantidad
         - precio               
@@ -360,7 +357,7 @@ paths:
                           $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'
-    put:
+    patch:
       summary: Update sneaker
       tags:
         - Sneaker
@@ -449,17 +446,41 @@ paths:
         '400':
           $ref: '#/components/responses/400'
     post:
-      summary: Create a new sneaker
-      operationId: createSneaker
+      summary: Upload a file
+      operationId: uploadFile
       x-controller: sneaker
       tags:
         - Sneaker
       requestBody:
-        required: true
+        description: Solicitud para subir un archivo
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Sneaker'
+              type: object
+              properties:
+                marca:
+                  type: string
+                genero:
+                  type: string
+                talla:
+                  type: string   
+                descripcion:
+                  type: string     
+                cantidad:
+                  type: number 
+                precio:
+                  type: number                            
+                file:
+                  type: string
+                  format: binary
+              required:
+                - marca
+                - genero
+                - talla
+                - descripcion
+                - cantidad
+                - precio   
+                - file                
       responses:
         '200':
           description: OK
@@ -472,7 +493,7 @@ paths:
                       user:
                         $ref: '#/components/schemas/SneakerResponse'
         '400':
-          $ref: '#/components/responses/400'
+          $ref: '#/components/responses/400'         
   /api/buy:
     post:
       summary: Add buy to shoppingcart

@@ -1,6 +1,28 @@
 //Import our model so we can us it to interact with the realated data in MongoDB
 const Sneaker = require("../models/sneaker.model");
 
+const FileSneaker = require("../models/file.model");
+
+const multer = require("multer");
+const uuid = require('uuid').v4;
+const path = require('path');
+
+// Función para renombrar el archivo cargado con Multer
+const renameFile = function(req, file, cb) {
+  const ext = path.extname(file.originalname);
+  const newFileName = uuid() + ext;
+  cb(null, newFileName);
+};
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/");
+  },
+  filename: renameFile
+});
+const upload = multer({ storage: storage }).single('file');
+
+
 //build our controller that will have our CRUD and other methods for our users
 const sneakerController = {
   //method to get all users using async/await syntax
@@ -161,7 +183,51 @@ const sneakerController = {
         statusCode: res.statusCode,
       });
     }
-  }
+  },
+    //method to create a new sneaker
+    uploadFile: async function (req, res) {
+      try {
+        upload(req, res, async function (err) {
+          if (err instanceof multer.MulterError) {
+            // Si se produce un error al cargar el archivo
+            console.log(err);
+            res.status(500).send('Error al cargar el archivo');
+          } else if (err) {
+            // Si se produce un error inesperado
+            console.log(err);
+            res.status(500).send('Error inesperado');
+          } else {
+            // Si la carga del archivo fue exitosa
+
+            const sneakerData = req.body;
+            sneakerData.img=req.file.filename;
+
+            //pass the sneaker to the create method of the User model
+            let newSneaker = await Sneaker.create(sneakerData);
+
+            let respSneaker = await Sneaker.findById(newSneaker._id);
+
+            const serverName = req.hostname;
+            const serverPort = req.app.get('port');
+
+            respSneaker.img=`${serverName}:${serverPort}/public/uploads/${respSneaker.img}`;
+
+            //return the newly created user
+            res.status(201).json(respSneaker);
+
+            console.log('Archivo cargado', req.file.filename);
+      
+          }
+        });
+      } catch (error) {
+        //handle errors creating user
+        console.log("failed to create user: " + error);
+        res.status(400).json({
+          message: error.message,
+          statusCode: res.statusCode,
+        });
+      }
+    },
 };
 
 module.exports = sneakerController;
