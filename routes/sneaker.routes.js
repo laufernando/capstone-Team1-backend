@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+
 //middleware used to require authentication
 const { validateJwtMiddleware } = require("../auth");
 
@@ -16,10 +17,14 @@ router.get("/", sneakerController.getSneaker);
 router.get("/:id", sneakerController.getSneakerId);
 
 //post route to create a user (user registration)
-router.post("/", sneakerController.createSneaker);
+//router.post("/", sneakerController.createSneaker);
 
-router.put("/:id", sneakerController.updateSneaker);
+router.patch("/:id", sneakerController.updateSneaker);
 
 router.delete("/:id", sneakerController.deleteSneaker);
+
+router.post("/", sneakerController.uploadFile);
+
+router.put("/", sneakerController.updateUploadFile);
 
 module.exports = router;

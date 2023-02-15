@@ -5,6 +5,8 @@ info:
 servers:
   - url: http://localhost:8081
     description: localhost
+  - url: http://localhost:8080
+    description: localhost on port 8080    
 components:
   schemas:
     User:
@@ -47,9 +49,7 @@ components:
         genero:
           type: string
         talla:
-          type: string  
-        img:
-          type: string  
+          type: string   
         descripcion:
           type: string     
         cantidad:
@@ -60,7 +60,6 @@ components:
         - marca
         - genero
         - talla
-        - img
         - descripcion
         - cantidad
         - precio               
@@ -105,6 +104,36 @@ components:
           type: string
         statusCode:
           type: string
+    ShoppingCart:
+      additionalProperties: false
+      type: object
+      properties:
+        sneaker_id:
+          type: string
+        user_id:
+          type: string
+        date_buy:
+          type: string  
+        unit:
+          type: string  
+      required:
+        - sneakerid
+        - userid
+        - unit
+    ShoppingCartResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        _id:
+          type: string        
+        sneaker_id:
+          type: string
+        user_id:
+          type: string
+        date_buy:
+          type: string  
+        unit:
+          type: string  
     OperationalError:
       allOf:
         - type: object
@@ -328,7 +357,7 @@ paths:
                           $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'
-    put:
+    patch:
       summary: Update sneaker
       tags:
         - Sneaker
@@ -417,17 +446,75 @@ paths:
         '400':
           $ref: '#/components/responses/400'
     post:
-      summary: Create a new sneaker
-      operationId: createSneaker
+      summary: Upload a file
+      operationId: uploadFile
       x-controller: sneaker
       tags:
         - Sneaker
       requestBody:
-        required: true
+        description: Actualiza la imagen
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Sneaker'
+              type: object
+              properties:
+                marca:
+                  type: string
+                genero:
+                  type: string
+                talla:
+                  type: string   
+                descripcion:
+                  type: string     
+                cantidad:
+                  type: number 
+                precio:
+                  type: number                            
+                file:
+                  type: string
+                  format: binary
+              required:
+                - marca
+                - genero
+                - talla
+                - descripcion
+                - cantidad
+                - precio   
+                - file                
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'  
+    put:
+      summary: Update a file
+      operationId: updateUploadFile
+      x-controller: sneaker
+      tags:
+        - Sneaker
+      requestBody:
+        description: Solicitud para subir un archivo
+        content:      
+          multipart/form-data:
+            schema:
+              type: object
+              properties:  
+                id:
+                  type: string                                          
+                file:
+                  type: string
+                  format: binary
+              required:  
+                - file
+                - id               
       responses:
         '200':
           description: OK
@@ -441,4 +528,154 @@ paths:
                         $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'                  
-  
+  /api/buy:
+    post:
+      summary: Add buy to shoppingcart
+      tags:
+        - Buy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShoppingCart'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ShoppingCartResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/buy/{id}:
+    get:
+      summary: Get productos from shopping cart
+      parameters:      
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string        
+      tags:
+        - Buy
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ShoppingCartResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/buy/product/{user_id}:
+    get:
+      summary: Get productos from shopping cart by user id
+      operationId: getProductsByUser
+      parameters:      
+      - name: user_id
+        in: path
+        description: user_id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string        
+      tags:
+        - Buy
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ShoppingCartResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/buy/product/{id}:
+    delete:
+      summary: Delete producto from Shopping Cart
+      tags:
+        - Buy
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: The Product data delete
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingCartResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+  /api/buy/product/{product_id}:
+    put:
+      summary: Update producto from Shopping Cart
+      tags:
+        - Buy
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: string
+            description: The Sneaker data update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShoppingCart'
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingCartResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'                                                            
