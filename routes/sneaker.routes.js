@@ -19,7 +19,7 @@ router.get("/:id", sneakerController.getSneakerId);
 //post route to create a user (user registration)
 //router.post("/", sneakerController.createSneaker);
 
-router.put("/:id", sneakerController.updateSneaker);
+router.patch("/:id", sneakerController.updateSneaker);
 
 router.delete("/:id", sneakerController.deleteSneaker);
 

@@ -47,9 +47,7 @@ components:
         genero:
           type: string
         talla:
-          type: string  
-        img:
-          type: string  
+          type: string   
         descripcion:
           type: string     
         cantidad:
@@ -60,7 +58,6 @@ components:
         - marca
         - genero
         - talla
-        - img
         - descripcion
         - cantidad
         - precio               
@@ -358,7 +355,7 @@ paths:
                           $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'
-    put:
+    patch:
       summary: Update sneaker
       tags:
         - Sneaker
