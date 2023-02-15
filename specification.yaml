@@ -133,7 +133,39 @@ components:
         date_buy:
           type: string  
         unit:
+          type: string
+    Guest:
+      additionalProperties: false
+      type: object
+      properties:
+        name:
+          type: string        
+        email:
+          type: string
+        address:
+          type: string
+        phone:
           type: string  
+        paymentMethod:
+          type: string
+        active:
+          type: number
+    GuestResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        name:
+          type: string        
+        email:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string  
+        paymentMethod:
+          type: string
+        active:
+          type: number  
     OperationalError:
       allOf:
         - type: object
@@ -644,4 +676,96 @@ paths:
         '401':
           $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404'                                                            
+          $ref: '#/components/responses/404'
+  /api/guest:
+    post:
+      summary: Add guest
+      tags:
+        - Guest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Guest'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/guest/{id}:
+    patch:
+      summary: Update Guest
+      tags:
+        - Guest
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: guest data update
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: guest updates
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Guest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+    get:
+      summary: Get Guest
+      parameters:      
+      - name: id
+        in: path
+        description: id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string        
+      tags:
+        - Guest
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/400'                                                         

@@ -12,6 +12,7 @@ const usersRouter = require('./routes/user.routes');
 const sneakerRouter = require('./routes/sneaker.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 const shoppingCartRouter = require('./routes/shoppingCart.routes');
+const guestRouter = require('./routes/guest.routes');
 
 const app = express();
 app.use(logger(process.env.LOG_FORMAT))
@@ -32,6 +33,7 @@ app.use('/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/sneaker', sneakerRouter);
 app.use('/api/buy', shoppingCartRouter);
+app.use('/api/guest', guestRouter);
 
 // Configurar una ruta para servir archivos estáticos
 app.use('/public', express.static(path.join(__dirname, 'public')));
