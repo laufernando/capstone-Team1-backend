@@ -17,12 +17,12 @@ router.get("/", sneakerController.getSneaker);
 router.get("/:id", sneakerController.getSneakerId);
 
 //post route to create a user (user registration)
-router.post("/", sneakerController.createSneaker);
+//router.post("/", sneakerController.createSneaker);
 
 router.put("/:id", sneakerController.updateSneaker);
 
 router.delete("/:id", sneakerController.deleteSneaker);
 
-router.post("/file", sneakerController.uploadFile);
+router.post("/", sneakerController.uploadFile);
 
 module.exports = router;
