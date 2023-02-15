@@ -1,7 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
+const path = require('path');
 
 const auth = require("./auth");
 
@@ -9,6 +10,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/user.routes');
 const sneakerRouter = require('./routes/sneaker.routes');
+const sneakerFileRouter = require('./routes/sneakerFile.routes');
 const swaggerDocsRouter = require("./routes/swagger.routes");
 const shopingCartRouter = require('./routes/shopingCart.routes');
 
@@ -23,14 +25,18 @@ app.use(cors({
   origin: '*'
 }))
 
+
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 
 //tell our app to use our user routes and prefix them with /api
 app.use('/api/users', usersRouter);
 app.use('/api/sneaker', sneakerRouter);
+app.use('/api/sneaker/file', sneakerFileRouter);
 app.use('/api/buy', shopingCartRouter);
 
+// Configurar una ruta para servir archivos estáticos
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 //custom error handling
 app.use((err, req, res, next) => {

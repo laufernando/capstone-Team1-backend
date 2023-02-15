@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+
 //middleware used to require authentication
 const { validateJwtMiddleware } = require("../auth");
 
@@ -21,5 +22,7 @@ router.post("/", sneakerController.createSneaker);
 router.put("/:id", sneakerController.updateSneaker);
 
 router.delete("/:id", sneakerController.deleteSneaker);
+
+router.post("/file", sneakerController.uploadFile);
 
 module.exports = router;

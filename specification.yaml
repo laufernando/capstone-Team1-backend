@@ -471,6 +471,56 @@ paths:
                         $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'
+  /api/sneaker/file:
+    post:
+      summary: Upload a file
+      operationId: uploadFile
+      x-controller: sneaker
+      tags:
+        - Sneaker
+      requestBody:
+        description: Solicitud para subir un archivo
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                marca:
+                  type: string
+                genero:
+                  type: string
+                talla:
+                  type: string   
+                descripcion:
+                  type: string     
+                cantidad:
+                  type: number 
+                precio:
+                  type: number                            
+                file:
+                  type: string
+                  format: binary
+              required:
+                - marca
+                - genero
+                - talla
+                - descripcion
+                - cantidad
+                - precio   
+                - file                
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'          
   /api/buy:
     post:
       summary: Add buy to shopingcart
