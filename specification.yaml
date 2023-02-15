@@ -513,7 +513,8 @@ paths:
                   type: string
                   format: binary
               required:  
-                - file                
+                - file
+                - id               
       responses:
         '200':
           description: OK
