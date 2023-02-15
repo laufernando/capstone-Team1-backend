@@ -25,4 +25,6 @@ router.delete("/:id", sneakerController.deleteSneaker);
 
 router.post("/", sneakerController.uploadFile);
 
+router.put("/", sneakerController.updateUploadFile);
+
 module.exports = router;
