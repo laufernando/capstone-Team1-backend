@@ -21,7 +21,7 @@ router.get("/:id", sneakerController.getSneakerId);
 
 router.patch("/:id", sneakerController.updateSneaker);
 
-router.delete("/:id", sneakerController.deleteSneaker);
+router.delete("/:id", validateJwtMiddleware, sneakerController.deleteSneaker);
 
 router.post("/", sneakerController.uploadFile);
 
