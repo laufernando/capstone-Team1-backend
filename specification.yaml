@@ -165,7 +165,35 @@ components:
         paymentMethod:
           type: string
         active:
-          type: number  
+          type: number
+    Gender:
+      additionalProperties: false
+      type: object
+      properties:
+        gender:
+          type: string
+      required:
+        - gender    
+    GenderResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        gender:
+          type: string
+    PaymentMethod:
+      additionalProperties: false
+      type: object
+      properties:
+        paymentMethod:
+          type: string
+      required:
+        - paymentMethod    
+    PaymentMethodResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        paymentMethod:
+          type: string 
     OperationalError:
       allOf:
         - type: object
@@ -801,5 +829,61 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/GuestResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/gender:
+    post:
+      summary: Add gender
+      tags:
+        - Gender catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Gender'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/GenderResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/payment:
+    post:
+      summary: Add payment method
+      tags:
+        - Payment Method Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentMethod'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PaymentMethodResponse'
         '400':
           $ref: '#/components/responses/400'                                                         
