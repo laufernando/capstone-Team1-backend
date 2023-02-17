@@ -1,5 +1,8 @@
 //Import our model so we can us it to interact with the realated data in MongoDB
 const ShoppingCart = require("../models/shoppingcart.model");
+const Sneaker = require("../models/sneaker.model");
+const Guest = require("../models/guest.model");
+const mongoose = require('mongoose');
 
 //build our controller that will have our CRUD and other methods for our users
 const shoppingcartController = {
@@ -9,11 +12,59 @@ const shoppingcartController = {
       //store user data sent through the request
       const shoppingCart = req.body;
 
-      //pass the userData to the create method of the User model
-      let newShoppingCart= await ShoppingCart.create(shoppingCart);
+      if(!mongoose.Types.ObjectId.isValid(shoppingCart.sneaker_id)){
+        res.status(400).send({
+          status: res.statusCode,
+          message: "sneaker id is invalid!",
+        });
+        return false;
+      }
 
-      //return the newly created user
-      res.status(201).json(await ShoppingCart.findById(newShoppingCart._id));
+      if(!mongoose.Types.ObjectId.isValid(shoppingCart.user_id)){
+        res.status(400).send({
+          status: res.statusCode,
+          message: "guest id is invalid!",
+        });
+        return false;
+      }
+
+      let sneaker = await Sneaker.findOne({ _id:shoppingCart.sneaker_id});
+      let guest   = await Guest.findOne({ _id:shoppingCart.user_id});
+
+      
+      /*if(sneaker==null){
+          res.status(404).send({
+            status: res.statusCode,
+            message: "Sneaker Not Found!",
+          });
+      }else{
+          //pass the userData to the create method of the User model
+          let newShoppingCart= await ShoppingCart.create(shoppingCart);
+          //return the newly created user
+          res.status(201).json(await ShoppingCart.findById(newShoppingCart._id));
+      }*/
+
+      switch(true)  {
+        case sneaker==null:
+            res.status(404).send({
+              status: res.statusCode,
+              message: "Sneaker Not Found!",
+            });
+          break;
+        case guest==null:
+            res.status(404).send({
+              status: res.statusCode,
+              message: "Guest Not Found!",
+            });
+          break;
+         default:
+              //pass the userData to the create method of the User model
+              let newShoppingCart= await ShoppingCart.create(shoppingCart);
+              //return the newly created user
+              res.status(201).json(await ShoppingCart.findById(newShoppingCart._id));
+          break;    
+      }
+
     } catch (error) {
       //handle errors creating user
       console.log("failed to create ShoppingCart: " + error);
