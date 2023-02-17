@@ -22,7 +22,33 @@ const paymentController = {
         });
       }
     },
-    getPaymentById: async function (req, res) {
+    async getPayment(req, res) {
+      //create base query
+      let query = {};
+      let allPayments;
+
+  
+      //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
+      try {
+        if (req.query.busqueda) {
+          const regex = new RegExp(`.*${req.query.busqueda}.*$`, "i");
+          query.payment = { $regex: regex };
+          allPayments = await paymentModel.find(query);
+        }else{
+          allPayments = await paymentModel.find();
+        }
+
+        //return all the genders that we found in JSON format
+        res.json(allPayments);
+      } catch (error) {
+        console.log("error getting payments: " + error);
+        res.status(400).json({
+          message: error.message,
+          statusCode: res.statusCode,
+        });
+      }     
+    },
+    /*getPaymentById: async function (req, res) {
         //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
         try {
             
@@ -46,7 +72,7 @@ const paymentController = {
             statusCode: res.statusCode,
           });
         }
-      },
+      },*/
     deletePayment: async function (req, res, next) {
         try {
           //get the user email from the request params

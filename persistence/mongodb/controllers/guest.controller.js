@@ -69,7 +69,8 @@ const guestController = {
       await guestModel.findByIdAndUpdate(id,updates)
     }
     
-      res.status(200).send({ message: "guest updated", statusCode: res.statusCode });
+    res.json(await guestModel.findById(id));
+    //res.status(200).send({ message: "guest updated", statusCode: res.statusCode });
     } catch (error) {
       console.log("failed to update guest: " + error);
       res.status(400).json({

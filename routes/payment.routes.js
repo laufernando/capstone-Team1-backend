@@ -11,8 +11,9 @@ const paymentController = require(
 
 //post route to create a user (user registration)
 router.post("/", paymentController.createPayment);
-router.get("/:id", paymentController.getPaymentById);
+//router.get("/:id", paymentController.getPaymentById);
 router.delete("/:id", paymentController.deletePayment);
+router.get("/", paymentController.getPayment);
 
 
 module.exports = router;
