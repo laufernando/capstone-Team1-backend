@@ -493,7 +493,7 @@ paths:
                 allOf:
                   - type: object
                     properties:
-                      users:
+                      sneakers:
                         type: array
                         items:
                           $ref: '#/components/schemas/SneakerResponse'
