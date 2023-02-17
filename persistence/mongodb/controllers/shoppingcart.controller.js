@@ -134,15 +134,14 @@ const shoppingcartController = {
       const product = await ShoppingCart.findByIdAndDelete(req.params.id);
       //update the user if we found a match and save or return a 404
       if (product) {
-        res.json(product);
+        res.status(200).send({ message: "Product delete", statusCode: res.statusCode });
       } else {
         res
           .status(404)
           .send({ message: "Product not found", statusCode: res.statusCode });
       }
-      res.status(200).send({ message: "sneaker delete", statusCode: res.statusCode });
     } catch (error) {
-      console.log("failed to update sneaker: " + error);
+      console.log("failed to delete product: " + error);
       res.status(400).json({
         message: error.message,
         statusCode: res.statusCode,

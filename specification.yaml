@@ -597,13 +597,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - type: object
-                    properties:
-                      users:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/ShoppingCartResponse'
+                $ref: '#/components/schemas/ShoppingCartResponse'
         '400':
           $ref: '#/components/responses/400'
   /api/buy/{id}:
@@ -628,13 +622,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - type: object
-                    properties:
-                      users:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/ShoppingCartResponse'
+                $ref: '#/components/schemas/ShoppingCartResponse'
         '400':
           $ref: '#/components/responses/400'
   /api/buy/product/{user_id}:
@@ -663,7 +651,7 @@ paths:
                 allOf:
                   - type: object
                     properties:
-                      users:
+                      products:
                         type: array
                         items:
                           $ref: '#/components/schemas/ShoppingCartResponse'
