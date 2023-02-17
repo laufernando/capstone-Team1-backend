@@ -388,7 +388,7 @@ paths:
           $ref: '#/components/responses/404'
   /api/sneaker/{id}:
     get:
-      summary: Get a list of sneakers
+      summary: Get a sneaker by id
       parameters:      
       - name: id
         in: path
@@ -418,7 +418,7 @@ paths:
         '400':
           $ref: '#/components/responses/400'
     patch:
-      summary: Update sneaker
+      summary: Update data of a sneaker (don't include the file)
       tags:
         - Sneaker
       parameters:
@@ -451,7 +451,7 @@ paths:
         '404':
           $ref: '#/components/responses/404'     
     delete:
-      summary: Delete sneaker
+      summary: Delete a sneaker
       tags:
         - Sneaker
       parameters:
@@ -478,7 +478,7 @@ paths:
           $ref: '#/components/responses/404'              
   /api/sneaker:
     get:
-      summary: Get a list of sneakers
+      summary: Get list of sneakers, if 'busqueda' query params is empty return all records
       parameters:
         - in: query
           name: busqueda
@@ -506,13 +506,13 @@ paths:
         '400':
           $ref: '#/components/responses/400'
     post:
-      summary: Upload a file
+      summary: Create a sneaker with file
       operationId: uploadFile
       x-controller: sneaker
       tags:
         - Sneaker
       requestBody:
-        description: Actualiza la imagen
+        description: File and data
         content:
           multipart/form-data:
             schema:
@@ -555,13 +555,13 @@ paths:
         '400':
           $ref: '#/components/responses/400'  
     put:
-      summary: Update a file
+      summary: Update sneaker file
       operationId: updateUploadFile
       x-controller: sneaker
       tags:
         - Sneaker
       requestBody:
-        description: Solicitud para subir un archivo
+        description: Update sneaker file
         content:      
           multipart/form-data:
             schema:
