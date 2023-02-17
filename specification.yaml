@@ -512,7 +512,7 @@ paths:
       tags:
         - Sneaker
       requestBody:
-        description: File and data
+        description: File and data (marca - brand, genero - gender, talla - size, descripcio - description, cantidad - quantity, precio - price, file)
         content:
           multipart/form-data:
             schema:
