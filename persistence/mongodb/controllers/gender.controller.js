@@ -22,7 +22,33 @@ const genderController = {
         });
       }
     },
-    getGenderById: async function (req, res) {
+    async getGender(req, res) {
+      //create base query
+      let query = {};
+      let allGenders;
+
+  
+      //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
+      try {
+        if (req.query.busqueda) {
+          const regex = new RegExp(`.*${req.query.busqueda}.*$`, "i");
+          query.gender = { $regex: regex };
+          allGenders = await genderModel.find(query);
+        }else{
+          allGenders = await genderModel.find();
+        }
+
+        //return all the genders that we found in JSON format
+        res.json(allGenders);
+      } catch (error) {
+        console.log("error getting genders: " + error);
+        res.status(400).json({
+          message: error.message,
+          statusCode: res.statusCode,
+        });
+      }     
+    },
+    /*getGenderById: async function (req, res) {
         //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
         try {
             
@@ -46,7 +72,7 @@ const genderController = {
             statusCode: res.statusCode,
           });
         }
-      },
+      },*/
     deleteGender: async function (req, res, next) {
         try {
           //get the user email from the request params

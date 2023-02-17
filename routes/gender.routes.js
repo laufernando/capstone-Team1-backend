@@ -11,8 +11,9 @@ const genderController = require(
 
 //post route to create a user (user registration)
 router.post("/", genderController.createGender);
-router.get("/:id", genderController.getGenderById);
+//router.get("/:id", genderController.getGenderById);
 router.delete("/:id", genderController.deleteGender);
+router.get("/", genderController.getGender);
 
 
 module.exports = router;
