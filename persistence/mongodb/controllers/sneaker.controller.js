@@ -23,16 +23,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('file');
 
 
-//build our controller that will have our CRUD and other methods for our users
+//build our controller that will have our CRUD and other methods for our sneaker
 const sneakerController = {
-  //method to get all users using async/await syntax
+  //method to get all sneaker using async/await syntax
   async getSneaker(req, res) {
     //create base query
     let query = {};
     let allSneakers;
     const serverName = req.hostname;
     const serverPort = req.app.get('port');
-    //if firstName filter appears in query parameters then modify the query to do a fuzzy search
 
     //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
     try {
@@ -46,31 +45,28 @@ const sneakerController = {
       allSneakers.forEach(function(sneaker) {
         sneaker.img=`${serverName}:${serverPort}/public/uploads/${sneaker.img}`;        
       });  
-      //return all the users that we found in JSON format
+      //return all the sneaker that we found in JSON format
       res.json(allSneakers);
     } catch (error) {
       console.log("error getting sneakers: " + error);
-      //if any code in the try block fails, send the user a HTTP status of 400 and a message stating we could not find any users
+      //if any code in the try block fails, send the sneaker a HTTP status of 400 and a message stating we could not find any sneaker
       res.status(400).json({
         message: error.message,
         statusCode: res.statusCode,
       });
     }     
   },
-  //method to get all users using async/await syntax
+  //method to get all sneaker using async/await syntax
   getSneakerId: async function (req, res) {
     //using a try/catch since we are using asyn/await and want to catch any errors if the code in the try block fails
     try {
-      //get the email address of the user from the url parameters
+      //get the email address of the sneaker from the url parameters
       const sneakerId = req.params.id;
       const serverName = req.hostname;
       const serverPort = req.app.get('port');
-      //use our model to find the user that match a query.
-      //{email: some@email.com} is the current query which really mean find the user with that email
-      //we use await here since this is an async process and we want the code to wait for this to finish before moving on to the next line of code
       let foundSneaker = await Sneaker.findById(req.params.id);
 
-      //if we found the user, return that user otherwise return a 404
+      //if we found the sneaker, return that sneaker otherwise return a 404
       if (foundSneaker) {
         foundSneaker.img=`${serverName}:${serverPort}/public/uploads/${foundSneaker.img}`; 
         res.json(foundSneaker);
@@ -81,8 +77,8 @@ const sneakerController = {
         });
       }
     } catch (error) {
-      console.log("error getting user: " + error);
-      //if any code in the try block fails, send the user a HTTP status of 400 and a message stating we could not find the user
+      console.log("error getting sneaker: " + error);
+      //if any code in the try block fails, send the sneaker a HTTP status of 400 and a message stating we could not find the sneaker
       res.status(400).json({
         message: error.message,
         statusCode: res.statusCode,
@@ -92,36 +88,36 @@ const sneakerController = {
   //method to create a new sneaker
   createSneaker: async function (req, res) {
     try {
-      //store user data sent through the request
+      //store sneaker data sent through the request
       const sneakerData = req.body;
 
-      //pass the userData to the create method of the User model
+      //pass the sneakerData to the create method of the sneaker model
       let newSneaker = await Sneaker.create(sneakerData);
 
-      //return the newly created user
+      //return the newly created sneaker
       res.status(201).json(await Sneaker.findById(newSneaker._id));
     } catch (error) {
-      //handle errors creating user
-      console.log("failed to create user: " + error);
+      //handle errors creating sneaker
+      console.log("failed to create sneaker: " + error);
       res.status(400).json({
         message: error.message,
         statusCode: res.statusCode,
       });
     }
   },
-  //method to update a user
+  //method to update a sneaker
   updateSneaker: async function (req, res, next) {
     try {
-      //get the user email from the request params
+      //get the sneaker email from the request params
       const id = req.params.id;
 
-      //store user data sent through the request
+      //store sneaker data sent through the request
       const newSneakerData = req.body;
 
-      //try to find our user by the email provided in the request params
+      //try to find our sneaker by the email provided in the request params
       const sneaker = await Sneaker.findById(id);
 
-      //update the user if we found a match and save or return a 404
+      //update the sneaker if we found a match and save or return a 404
       if (sneaker) {
         Object.assign(sneaker, newSneakerData);
         await sneaker.save();
@@ -131,7 +127,7 @@ const sneakerController = {
           .send({ message: "sneaker not found", statusCode: res.statusCode });
       }
 
-      //respond with updated user
+      //respond with updated sneaker
       res.json(await Sneaker.findById(sneaker._id));
     } catch (error) {
       console.log("failed to update sneaker: " + error);
@@ -141,19 +137,19 @@ const sneakerController = {
       });
     }
   },
-  //method to update a user
+  //method to update a sneaker
   deleteSneaker: async function (req, res, next) {
     try {
-      //get the user email from the request params
+      //get the sneaker email from the request params
       const id = req.params.id;
 
-      //store user data sent through the request
+      //store sneaker data sent through the request
       const delSneakerData = req.body;
 
-      //try to find our user by the email provided in the request params
+      //try to find our sneaker by the email provided in the request params
       const sneaker = await Sneaker.findById(id);
 
-      //update the user if we found a match and save or return a 404
+      //update the sneaker if we found a match and save or return a 404
       if (sneaker) {
         await sneaker.deleteOne(sneaker, function(err, obj) {
           if (err) throw err
@@ -190,7 +186,7 @@ const sneakerController = {
             const sneakerData = req.body;
             sneakerData.img=req.file.filename;
 
-            //pass the sneaker to the create method of the User model
+            //pass the sneaker to the create method of the sneaker model
             let newSneaker = await Sneaker.create(sneakerData);
 
             let respSneaker = await Sneaker.findById(newSneaker._id);
@@ -200,7 +196,7 @@ const sneakerController = {
 
             respSneaker.img=`${serverName}:${serverPort}/public/uploads/${respSneaker.img}`;
 
-            //return the newly created user
+            //return the newly created sneaker
             res.status(201).json(respSneaker);
 
             console.log('Archivo cargado', req.file.filename);
@@ -208,8 +204,8 @@ const sneakerController = {
           }
         });
       } catch (error) {
-        //handle errors creating user
-        console.log("failed to create user: " + error);
+        //handle errors creating sneaker
+        console.log("failed to create sneaker: " + error);
         res.status(400).json({
           message: error.message,
           statusCode: res.statusCode,
@@ -237,7 +233,7 @@ const sneakerController = {
 
             sneakerData.img=req.file.filename;
 
-                  //update the user if we found a match and save or return a 404
+                  //update the sneaker if we found a match and save or return a 404
             if (sneakerData) {
               Object.assign(sneaker, sneakerData);
               await sneaker.save();
@@ -253,7 +249,7 @@ const sneakerController = {
 
             sneakerData.img=`${serverName}:${serverPort}/public/uploads/${sneakerData.img}`;
 
-            //return the newly created user
+            //return the newly created sneaker
             res.status(201).json(sneakerData);
 
             console.log('Archivo cargado', req.file.filename);
@@ -261,8 +257,8 @@ const sneakerController = {
           }
         });
       } catch (error) {
-        //handle errors creating user
-        console.log("failed to create user: " + error);
+        //handle errors creating sneaker
+        console.log("failed to create sneaker: " + error);
         res.status(400).json({
           message: error.message,
           statusCode: res.statusCode,
