@@ -408,13 +408,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - type: object
-                    properties:
-                      users:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/SneakerResponse'
+                $ref: '#/components/schemas/SneakerResponse'
         '400':
           $ref: '#/components/responses/400'
     patch:
