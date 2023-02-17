@@ -43,7 +43,7 @@ const sneakerController = {
         allSneakers = await Sneaker.find();
       }
       allSneakers.forEach(function(sneaker) {
-        sneaker.img=`${serverName}:${serverPort}/public/uploads/${sneaker.img}`;        
+        sneaker.img=`http://${serverName}:${serverPort}/public/uploads/${sneaker.img}`;        
       });  
       //return all the sneaker that we found in JSON format
       res.json(allSneakers);
@@ -68,7 +68,7 @@ const sneakerController = {
 
       //if we found the sneaker, return that sneaker otherwise return a 404
       if (foundSneaker) {
-        foundSneaker.img=`${serverName}:${serverPort}/public/uploads/${foundSneaker.img}`; 
+        foundSneaker.img=`http://${serverName}:${serverPort}/public/uploads/${foundSneaker.img}`; 
         res.json(foundSneaker);
       } else {
         res.status(404).send({
@@ -127,8 +127,15 @@ const sneakerController = {
           .send({ message: "sneaker not found", statusCode: res.statusCode });
       }
 
+      let respSneaker = await Sneaker.findById(id);
+
+      const serverName = req.hostname;
+      const serverPort = req.app.get('port');
+
+      respSneaker.img=`http://${serverName}:${serverPort}/public/uploads/${respSneaker.img}`;
+
       //respond with updated sneaker
-      res.json(await Sneaker.findById(sneaker._id));
+      res.json(respSneaker);
     } catch (error) {
       console.log("failed to update sneaker: " + error);
       res.status(400).json({
@@ -194,7 +201,7 @@ const sneakerController = {
             const serverName = req.hostname;
             const serverPort = req.app.get('port');
 
-            respSneaker.img=`${serverName}:${serverPort}/public/uploads/${respSneaker.img}`;
+            respSneaker.img=`http://${serverName}:${serverPort}/public/uploads/${respSneaker.img}`;
 
             //return the newly created sneaker
             res.status(201).json(respSneaker);
@@ -247,7 +254,7 @@ const sneakerController = {
             const serverName = req.hostname;
             const serverPort = req.app.get('port');
 
-            sneakerData.img=`${serverName}:${serverPort}/public/uploads/${sneakerData.img}`;
+            sneakerData.img=`http://${serverName}:${serverPort}/public/uploads/${sneakerData.img}`;
 
             //return the newly created sneaker
             res.status(201).json(sneakerData);
