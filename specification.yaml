@@ -193,7 +193,23 @@ components:
       type: object
       properties:
         paymentMethod:
-          type: string 
+          type: string
+    Size:
+      additionalProperties: false
+      type: object
+      properties:
+        size:
+          type: string
+      required:
+        - size    
+    SizeResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        _id:
+          type: string
+        size:
+          type: string           
     OperationalError:
       allOf:
         - type: object
@@ -977,3 +993,87 @@ paths:
           $ref: '#/components/responses/401'
         '404':
           $ref: '#/components/responses/404'                                                        
+  /api/size:
+    post:
+      summary: Add size
+      tags:
+        - Size catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Size'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      payment:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SizeResponse'
+        '400':
+          $ref: '#/components/responses/400'
+    get:
+      summary: Get list of size
+      parameters:      
+      - name: busqueda
+        in: query
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string        
+      tags:
+        - Size catalog
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      payment:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SizeResponse'
+        '400':
+          $ref: '#/components/responses/400'
+  /api/size/{id}:
+    delete:
+      summary: Delete size
+      tags:
+        - Size catalog
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            description: Size data delete
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SizeResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'                                                                  

@@ -15,6 +15,7 @@ const shoppingCartRouter = require('./routes/shoppingCart.routes');
 const guestRouter = require('./routes/guest.routes');
 const genderRouter = require('./routes/gender.routes');
 const paymentRouter = require('./routes/payment.routes');
+const sizeRouter = require('./routes/size.routes');
 
 const app = express();
 app.use(logger(process.env.LOG_FORMAT))
@@ -38,6 +39,7 @@ app.use('/api/buy', shoppingCartRouter);
 app.use('/api/guest', guestRouter);
 app.use('/api/gender', genderRouter);
 app.use('/api/payment', paymentRouter);
+app.use('/api/size', sizeRouter);
 
 // Configurar una ruta para servir archivos estáticos
 app.use('/public', express.static(path.join(__dirname, 'public')));
