@@ -235,7 +235,8 @@ const sneakerController = {
             // Si la carga del archivo fue exitosa
 
             const id = req.body.id;
-            let sneakerData = await Sneaker.findById(id);
+            //let sneakerData = await Sneaker.findById(id);
+            const sneakerData = req.body;
             let sneaker = await Sneaker.findById(id);
 
             sneakerData.img=req.file.filename;

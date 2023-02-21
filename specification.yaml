@@ -578,12 +578,30 @@ paths:
               type: object
               properties:  
                 id:
-                  type: string                                          
+                  type: string
+                marca:
+                  type: string
+                genero:
+                  type: string
+                talla:
+                  type: string   
+                descripcion:
+                  type: string     
+                cantidad:
+                  type: number 
+                precio:
+                  type: number                                                           
                 file:
                   type: string
                   format: binary
               required:  
                 - file
+                - marca
+                - genero
+                - talla
+                - descripcion
+                - cantidad
+                - precio                
                 - id               
       responses:
         '200':
