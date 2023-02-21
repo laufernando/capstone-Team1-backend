@@ -235,11 +235,19 @@ const sneakerController = {
             // Si la carga del archivo fue exitosa
 
             const id = req.body.id;
+            console.log('id ',id)
             //let sneakerData = await Sneaker.findById(id);
-            const sneakerData = req.body;
+            let sneakerData = req.body;
+            console.log('Sneaker body ',sneakerData)
             let sneaker = await Sneaker.findById(id);
-
-            sneakerData.img=req.file.filename;
+            while(!sneaker){
+              sneaker = await Sneaker.findById(id);
+            }
+            console.log('sneaker ',sneaker)
+            if(req.file!=null&&req.file!='null'){
+              sneakerData.img=req.file.filename;
+            }
+           
 
                   //update the sneaker if we found a match and save or return a 404
             if (sneakerData) {
@@ -251,7 +259,7 @@ const sneakerController = {
                 .send({ message: "sneaker not found", statusCode: res.statusCode });
             }
 
-
+            sneakerData = await Sneaker.findById(id);
             const serverName = req.hostname;
             const serverPort = req.app.get('port');
 
@@ -260,7 +268,7 @@ const sneakerController = {
             //return the newly created sneaker
             res.status(201).json(sneakerData);
 
-            console.log('Archivo cargado', req.file.filename);
+            
       
           }
         });
