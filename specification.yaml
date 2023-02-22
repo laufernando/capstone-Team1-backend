@@ -578,30 +578,12 @@ paths:
               type: object
               properties:  
                 id:
-                  type: string
-                marca:
-                  type: string
-                genero:
-                  type: string
-                talla:
-                  type: string   
-                descripcion:
-                  type: string     
-                cantidad:
-                  type: number 
-                precio:
-                  type: number                                                           
+                  type: string                                          
                 file:
                   type: string
                   format: binary
               required:  
                 - file
-                - marca
-                - genero
-                - talla
-                - descripcion
-                - cantidad
-                - precio                
                 - id               
       responses:
         '200':
@@ -611,7 +593,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/SneakerResponse'
         '400':
-          $ref: '#/components/responses/400'                  
+          $ref: '#/components/responses/400'
+  /api/sneaker/items:
+    post:
+      summary: Get list of sneakers by items of id
+      operationId: sneakersByItems
+      tags:
+        - Sneaker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+              example: ["str1", "str2", "str3"]             
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      sneakers:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SneakerResponse'
+        '400':
+          $ref: '#/components/responses/400'           
   /api/buy:
     post:
       summary: Add buy to shoppingcart

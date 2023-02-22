@@ -26,5 +26,6 @@ router.delete("/:id", validateJwtMiddleware, sneakerController.deleteSneaker);
 router.post("/", sneakerController.uploadFile);
 
 router.put("/", sneakerController.updateUploadFile);
+router.post("/items/", sneakerController.sneakersByItems);
 
 module.exports = router;

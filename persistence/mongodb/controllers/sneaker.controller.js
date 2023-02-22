@@ -280,7 +280,30 @@ const sneakerController = {
           statusCode: res.statusCode,
         });
       }
-    },    
+    },
+    sneakersByItems: async function (req, res) {
+      try {
+        let requestBody = JSON.stringify(req.body );
+        console.log(requestBody);
+
+        const sneakers = await Sneaker.find({ _id: { $in: JSON.parse(requestBody) } });
+        if(sneakers){
+          res.status(200).json(sneakers);
+        }else{
+          res.status(404).send({
+            status: res.statusCode,
+            message: "Products Not Found!",
+          });
+        }
+      } catch (error) {
+        console.log("error getting sneaker: " + error);
+        //if any code in the try block fails, send the sneaker a HTTP status of 400 and a message stating we could not find the sneaker
+        res.status(400).json({
+          message: error.message,
+          statusCode: res.statusCode,
+        });
+      }
+    }    
 };
 
 module.exports = sneakerController;
