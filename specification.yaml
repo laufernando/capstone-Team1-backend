@@ -209,7 +209,27 @@ components:
         _id:
           type: string
         size:
-          type: string           
+          type: string 
+    Mail:
+      additionalProperties: false
+      type: object
+      properties:
+        para:
+          type: string    
+        asunto:
+          type: string
+        mensaje:
+          type: string                        
+      required:
+        - para
+        - asunto
+        - mensaje    
+    MailResponse:
+      additionalProperties: false
+      type: object
+      properties:
+        mensaje:
+          type: string                    
     OperationalError:
       allOf:
         - type: object
@@ -1108,4 +1128,32 @@ paths:
         '401':
           $ref: '#/components/responses/401'
         '404':
-          $ref: '#/components/responses/404'                                                                  
+          $ref: '#/components/responses/404'
+  /api/mail:
+    post:
+      summary: Send mail
+      tags:
+        - Mail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mail'        
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      payment:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MailResponse'
+        '400':
+          $ref: '#/components/responses/400'                                                                            
