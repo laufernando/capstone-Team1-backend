@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
 //build our controller that will have our CRUD and other methods for size
-const sizeController = {
+const mailController = {
     //method to create a new size
     sedMessage: async function (req, res) {
       try {
@@ -37,4 +37,4 @@ const sizeController = {
   
   
   
-  module.exports = sizeController;
+  module.exports = mailController;
