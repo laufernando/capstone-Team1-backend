@@ -8,27 +8,27 @@ const sneakerSchema = new mongoose.Schema({
   marca: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 0,
   },
   genero: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 0,
   },
   talla: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 0,
   },
   img: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 0,
   },
   descripcion: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 0,
   }, 
   cantidad: {
     type: Number,
