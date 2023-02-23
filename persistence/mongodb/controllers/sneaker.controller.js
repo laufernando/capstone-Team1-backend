@@ -285,8 +285,14 @@ const sneakerController = {
       try {
         let requestBody = JSON.stringify(req.body );
         console.log(requestBody);
-
+        const serverName = req.hostname;
+        const serverPort = req.app.get('port');
         const sneakers = await Sneaker.find({ _id: { $in: JSON.parse(requestBody) } });
+
+        sneakers.forEach(function(sneaker) {
+          sneaker.img=`http://${serverName}:${serverPort}/public/uploads/${sneaker.img}`;        
+        });  
+
         if(sneakers){
           res.status(200).json(sneakers);
         }else{
